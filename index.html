@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Secured Lending Research Hub — Nubank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#5B4FCF;--purple-dark:#3C3489;--purple-mid:#7F77DD;--purple-light:#EEEDFE;--purple-xlight:#F5F4FF;
+  --green:#0F6E56;--green-light:#E1F5EE;--red:#E24B4A;--bg:#F8F7FF;--card:#FFFFFF;
+  --border:rgba(91,79,207,0.10);--border-mid:rgba(91,79,207,0.20);
+  --text:#1A1533;--text2:#5A5480;--text3:#9590C0;
+  --font:'Sora',sans-serif;--mono:'DM Mono',monospace;--radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+nav{background:rgba(255,255,255,0.90);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;height:60px;display:flex;align-items:center;padding:0 32px}
+.nav-inner{width:100%;max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.nu-logo{width:34px;height:34px;background:var(--purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.5px;flex-shrink:0}
+.nav-label{font-size:13px;color:var(--text2);font-weight:400}
+.nav-sep{width:1px;height:16px;background:var(--border-mid);margin:0 4px}
+.nav-title{font-size:13px;color:var(--purple);font-weight:600}
+#home{max-width:1140px;margin:0 auto;padding:0 32px}
+.hero{padding:72px 0 56px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:20px;font-family:var(--mono)}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(0.8)}}
+h1{font-size:52px;font-weight:700;line-height:1.05;color:var(--purple-dark);letter-spacing:-1.5px;margin-bottom:20px}
+h1 span{color:var(--purple)}
+.hero-sub{font-size:16px;color:var(--text2);max-width:500px;line-height:1.75;font-weight:300}
+.hero-stats{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.hero-stat{background:var(--purple-light);border-radius:var(--radius-sm);padding:12px 20px;text-align:right}
+.hero-stat-num{font-size:28px;font-weight:700;color:var(--purple-dark);line-height:1;letter-spacing:-1px}
+.hero-stat-label{font-size:11px;color:var(--purple);font-weight:500;letter-spacing:.05em;margin-top:2px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:20px;font-family:var(--mono)}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:80px}
+.product-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.product-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--purple-xlight),transparent);opacity:0;transition:.25s}
+.product-card:hover{border-color:var(--purple-mid);transform:translateY(-4px);box-shadow:0 12px 40px rgba(91,79,207,0.12)}
+.product-card:hover::after{opacity:1}
+.pc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:relative;z-index:1}
+.pc-icon{width:48px;height:48px;background:var(--purple-light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.pc-arrow{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border-mid);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;transition:all .2s}
+.product-card:hover .pc-arrow{background:var(--purple);border-color:var(--purple);color:#fff}
+.pc-title{font-size:19px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.3px;position:relative;z-index:1}
+.pc-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px;font-weight:300;position:relative;z-index:1}
+.pc-badge{display:inline-block;font-size:10px;padding:4px 10px;border-radius:20px;background:var(--purple-light);color:var(--purple-dark);font-weight:600;letter-spacing:.04em;font-family:var(--mono);position:relative;z-index:1}
+#detail{display:none;max-width:1140px;margin:0 auto;padding:0 32px 80px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:1.5px solid var(--border-mid);border-radius:40px;padding:9px 20px;color:var(--text2);cursor:pointer;font-family:var(--font);font-size:13px;font-weight:500;margin:32px 0 36px;transition:all .18s}
+.back-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-light)}
+.back-btn svg{width:14px;height:14px;transition:transform .18s}
+.back-btn:hover svg{transform:translateX(-2px)}
+.product-header{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;margin-bottom:32px;padding:32px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius)}
+.ph-icon{width:64px;height:64px;background:var(--purple);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.ph-eyebrow{font-size:10px;font-weight:600;color:var(--purple);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;font-family:var(--mono)}
+.ph-title{font-size:26px;font-weight:700;color:var(--purple-dark);letter-spacing:-0.5px;margin-bottom:4px}
+.ph-sub{font-size:13px;color:var(--text2);font-weight:300}
+.ph-badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:11px;padding:5px 14px;border-radius:20px;background:var(--green-light);color:var(--green);font-weight:600;font-family:var(--mono)}
+.ph-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.tabs{display:flex;gap:0;margin-bottom:28px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:5px;width:fit-content}
+.tab{background:none;border:none;padding:9px 22px;border-radius:9px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;font-family:var(--font);transition:all .18s;white-space:nowrap}
+.tab:hover{color:var(--purple)}
+.tab.active{background:var(--purple);color:#fff}
+.tab-content{display:none}.tab-content.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.block{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+.block h3{font-size:13px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:var(--mono)}
+.block p{font-size:14px;color:var(--text2);line-height:1.75;font-weight:300}
+.block ul{list-style:none}
+.block ul li{font-size:13px;color:var(--text2);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;line-height:1.55;font-weight:300}
+.block ul li:last-child{border-bottom:none}
+.block ul li::before{content:'→';color:var(--purple);flex-shrink:0;font-size:12px;margin-top:1px}
+.stat-card{background:var(--purple);border-radius:var(--radius);padding:24px 20px;text-align:center}
+.stat-num{font-size:38px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-1.5px;line-height:1}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.72);line-height:1.5;font-weight:400}
+.tab-section{margin-bottom:32px}
+.tab-section-label{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.tab-section-label h2{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);white-space:nowrap}
+.tab-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.insight-card{background:var(--card);border:1.5px solid var(--border);border-left:3px solid var(--purple);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:18px 20px;margin-bottom:10px}
+.insight-card p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px;font-weight:300}
+.insight-card p strong{color:var(--text);font-weight:600}
+.source-tag{display:inline-block;font-size:10px;padding:3px 10px;border-radius:20px;background:var(--purple-light);color:var(--purple-dark);font-weight:600;font-family:var(--mono);letter-spacing:.02em}
+.pain-item{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-bottom:10px;transition:border-color .18s}
+.pain-item:hover{border-color:rgba(226,75,74,0.3)}
+.pain-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:6px}
+.pain-text{font-size:13px;color:var(--text2);line-height:1.7;font-weight:300}
+.pain-text strong{color:var(--text);font-weight:600}
+.player-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .18s}
+.player-card:hover{border-color:var(--purple-mid)}
+.player-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:-0.2px}
+.player-pos{font-size:10px;color:var(--purple);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;font-family:var(--mono)}
+.player-desc{font-size:13px;color:var(--text2);line-height:1.65;font-weight:300}
+.player-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.player-tag{font-size:10px;padding:3px 10px;border-radius:20px;background:var(--purple-light);color:var(--purple-dark);font-weight:600;font-family:var(--mono)}
+@media(max-width:900px){.products-grid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr;gap:24px}.hero-stats{flex-direction:row;align-items:flex-start}h1{font-size:38px}}
+@media(max-width:640px){nav{padding:0 20px}#home,#detail{padding:0 20px}.products-grid{grid-template-columns:1fr}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}h1{font-size:32px}.hero{padding:48px 0 40px}.tabs{flex-wrap:wrap;width:100%}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="nu-logo">Nu</div>
+    <div class="nav-sep"></div>
+    <div class="nav-label">Secured Lending</div>
+    <div class="nav-sep"></div>
+    <div class="nav-title">Research Hub</div>
+  </div>
+</nav>
+
+<div id="home">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow"><span class="hero-dot"></span>Q1 2025 — Q1 2026</div>
+      <h1>Secured Lending<br><span>Research Hub</span></h1>
+      <p class="hero-sub">Consolidated research findings across four secured lending products. Select a product to explore the overview, hiring journey, post-hiring gaps, and competitive landscape.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">11</div><div class="hero-stat-label">Studies</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-label">Products</div></div>
+    </div>
+  </div>
+  <div class="section-label">Products</div>
+  <div class="products-grid">
+    <div class="product-card" onclick="showProduct('fgts')">
+      <div class="pc-header"><div class="pc-icon">🏦</div><div class="pc-arrow">→</div></div>
+      <div class="pc-title">FGTS</div>
+      <div class="pc-desc">High-recurrence product in a saturated market.</div>
+      <div class="pc-badge">Q2 2025 — Q1 2026</div>
+    </div>
+    <div class="product-card" onclick="showProduct('private')">
+      <div class="pc-header"><div class="pc-icon">💼</div><div class="pc-arrow">→</div></div>
+      <div class="pc-title">Private Payroll</div>
+      <div class="pc-desc">Payroll-deducted credit for private sector employees. High potential, low conversion, limited awareness.</div>
+      <div class="pc-badge">Q2 2025 — Q4 2025</div>
+    </div>
+    <div class="product-card" onclick="showProduct('inss')">
+      <div class="pc-header"><div class="pc-icon">🧓</div><div class="pc-arrow">→</div></div>
+      <div class="pc-title">INSS</div>
+      <div class="pc-desc">Payroll loan for retirees and pensioners. Audience with low digital literacy.</div>
+      <div class="pc-badge">Q3 2025 — Q1 2026</div>
+    </div>
+    <div class="product-card" onclick="showProduct('public')">
+      <div class="pc-header"><div class="pc-icon">🏛</div><div class="pc-arrow">→</div></div>
+      <div class="pc-title">Public Payroll</div>
+      <div class="pc-desc">Payroll loan for public servants. Analytical profile with essential multi-channel needs.</div>
+      <div class="pc-badge">Q4 2024 — Q1 2026</div>
+    </div>
+  </div>
+</div>
+
+<div id="detail">
+  <div style="max-width:1140px;margin:0 auto">
+    <button class="back-btn" onclick="showHome()">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2L4 7l5 5"/></svg>
+      Back
+    </button>
+  </div>
+
+  <!-- ============ FGTS ============ -->
+  <div id="panel-fgts" style="display:none">
+    <div class="product-header">
+      <div class="ph-icon">🏦</div>
+      <div>
+        <div class="ph-eyebrow">Product · Secured Lending</div>
+        <div class="ph-title">FGTS</div>
+        <div class="ph-sub">Recurrence & One Click · Market Saturation — Q2 2025 to Q1 2026</div>
+        <div class="ph-badge"><span class="ph-badge-dot"></span>Most recent study: Q1 2026 · N=1,134</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('fgts','overview',this)">Overview</button>
+      <button class="tab" onclick="switchTab('fgts','hiring',this)">Hiring</button>
+      <button class="tab" onclick="switchTab('fgts','posthiring',this)">Post-Hiring</button>
+      <button class="tab" onclick="switchTab('fgts','players',this)">Players</button>
+    </div>
+
+    <div id="fgts-overview" class="tab-content active">
+      <div class="block"><h3>What is the product</h3><p>FGTS Saque-Aniversário allows CLT workers to anticipate their severance fund balance, receiving cash immediately in exchange for an interest rate. Competes directly with credit cards and personal loans and is perceived as "the user's own money."</p></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="block"><h3>Market dynamics</h3><ul><li>Saturated market: top 10 institutions capture ~80% of transactions</li><li>Caixa dominates first hire; Nubank leads in recurrence</li><li>Inter and Meu Tudo growing fast among recurring Mass Market users</li><li>~40% of Nubank clients switch banks on the second hire</li></ul></div>
+        <div class="block"><h3>Audience profile</h3><ul><li>Mass Market (57% recurring) · 30–49 years · indebted and credit-restricted</li><li>52% female · Southeast (50%), Northeast (19%)</li><li>Bank app is the main hiring channel (59% Mass Market)</li><li>High post-hiring satisfaction (83%) but loyalty is conditional on price</li></ul></div>
+      </div>
+      <div class="block" style="margin-bottom:16px">
+        <h3>KPIs — Nuzaré Wave 3</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+          <div class="stat-card"><div class="stat-num">69</div><div class="stat-label">pNPS — +10pp vs W2</div></div>
+          <div class="stat-card"><div class="stat-num">84%</div><div class="stat-label">CSAT (Top2Box) — +8pp vs W2</div></div>
+          <div class="stat-card"><div class="stat-num">93%</div><div class="stat-label">Purchase Intent (Top2Box) — stable vs W2</div></div>
+        </div>
+        <ul style="margin-top:12px">
+          <li>Hiring Process Understanding (89): ease, speed, and no bureaucracy are the main satisfaction drivers</li>
+          <li>Interest Rates Perception (54): lowest dimension — structural market barrier, still better than W2 (52)</li>
+        </ul>
+      </div>
+      <div class="insight-card">
+        <p><strong>Market data (Market Saturation Q1/2026):</strong> the model explains 81% of hiring intent (R²); 59% of recurring Mass Market users hire via bank app; 77% of recurring users stay at the same institution — but ~40% switch on the second hire.</p>
+        <span class="source-tag">Market Saturation Q1/2026 · N=1,134</span>
+      </div>
+    </div>
+
+    <div id="fgts-hiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Awareness</h2></div>
+        <div class="insight-card"><p><strong>"It's my money" is the core emotional driver</strong> for recurring users: "FGTS is my money — no reason to leave it sitting there." They rely on it to cover fixed bills (rent, utilities) every month, treating it like revolving credit rather than emergency reserve.</p><span class="source-tag">Recurrence & One Click Q2/2025 · N=12</span></div>
+        <div class="insight-card"><p><strong>Non-recurring users see FGTS as a safety net</strong>, not a financial tool. They only anticipate under urgent circumstances (illness, job change, unexpected expenses) and prefer to preserve it for significant future needs.</p><span class="source-tag">Recurrence & One Click Q2/2025 · N=12</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Aggressive outreach from competitors</strong> — users feel harassed by smaller fintechs via WhatsApp/SMS with margin data. This generates distrust across the entire market and puts users on the defensive (ignore, delete, block).</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Consideration</h2></div>
+        <div class="insight-card"><p><strong>Acquisition is driven by existing relationship + speed + simplicity.</strong> Users rely on their current bank as a trust shortcut. Urgency dominates the decision, reducing willingness to compare alternatives. Operational simplicity outweighs financial optimization at first use.</p><span class="source-tag">Market Saturation Q1/2026 · SEM Model</span></div>
+        <div class="insight-card"><p><strong>Hiring intent is not solely driven by price</strong> — product trust (63%) and emotional security (30%) carry significant weight. Rate is an important hygiene factor, but not the only motivator. For recurring users who compare frequently, rate and available credit become more decisive over time.</p><span class="source-tag">Market Saturation Q1/2026 · SEM Model</span></div>
+        <div class="insight-card"><p><strong>Recurring users are willing to accept higher fees in exchange for convenience</strong> — if the amount is urgent or they're already anticipating frequently with the same bank, familiarity with the process reduces price sensitivity.</p><span class="source-tag">Recurrence & One Click Q2/2025 · N=12</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>High rate perception vs. low net amount</strong> — main hiring barrier (55%). Users see the rate in % but don't understand the real budget impact. Drives abandonment and competitor comparison, especially among non-recurring users who actively compare.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Conversion</h2></div>
+        <div class="insight-card"><p><strong>One Click is the bare minimum recurring users expect.</strong> Repeating the full journey every time is perceived as a lack of recognition, not extra security. Non-recurring users also value it, but prefer to check available balance first before skipping steps.</p><span class="source-tag">Recurrence & One Click Q2/2025 · N=12</span></div>
+        <div class="insight-card"><p><strong>Hiring is predominantly digital</strong> — the bank app is the primary channel (56% overall; 59% Mass Market recurring). Speed to cash is the key conversion lever: making time-to-cash explicit and tangible reduces drop-off at the final step.</p><span class="source-tag">Market Saturation Q1/2026 · N=1,134</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Full journey repeated on every hire</strong> — recurring users with active CNPJ authorization must redo all steps. This creates unnecessary friction, adds excessive steps to the funnel, and accelerates churn to competitors with simpler flows.</div></div>
+      </div>
+    </div>
+
+    <div id="fgts-posthiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Management</h2></div>
+        <div class="insight-card"><p><strong>Loyalty is sustained by belonging (27%), positive experience (22%), and well-rated product (16%).</strong> Competitive rate has only 4% weight in retention — but its absence breaks everything. The product must deliver practical recognition (discounts, better conditions) as a mandatory baseline, not a bonus.</p><span class="source-tag">Market Saturation Q1/2026 · SEM Model</span></div>
+        <div class="insight-card"><p><strong>Recurrence is driven by rate, credit amount, and ecosystem integration.</strong> Once familiarity is established, users become more economically rational. Recurring users actively compare rates and available credit. Ecosystem integration (FGTS advance as part of a broader financial offer) increases convenience and perceived value.</p><span class="source-tag">Market Saturation Q1/2026 · Tactics Framework</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Fragile loyalty at renewal</strong> — on the second hire, rate and available amount become decisive. The bank relationship alone is not enough to retain users who find a better deal elsewhere. Inter and Meu Tudo are well positioned to capture this audience.</div></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>No practical recognition for recurring users</strong> — they expect discounts or better conditions as a reward for repeat use, but receive the same terms. Emotional rewards (gifts, events) don't compensate for the absence of financial advantage. Progressive benefits (better rates, higher limits) are what truly drive retention.</div></div>
+      </div>
+    </div>
+
+    <div id="fgts-players" class="tab-content">
+      <div class="grid-4">
+        <div class="player-card"><div class="player-name">Nubank</div><div class="player-pos">Leader in recurrence</div><div class="player-desc">Strong among recurring users — 58% of last withdrawals. Loses share to Inter and Meu Tudo on high-ticket clients. Main asset: familiarity and UX. Main risk: silent churn at renewal when rate or available amount falls short.</div><div class="player-tags"><span class="player-tag">Superior UX</span><span class="player-tag">Relational loyalty</span><span class="player-tag">App-first</span></div></div>
+        <div class="player-card"><div class="player-name">Caixa Econômica Federal</div><div class="player-pos">Market entry point</div><div class="player-desc">Institutional reference for first hire — 30% of unique users. Strength from historical FGTS association. Loses relevance on second hire, especially to digital players.</div><div class="player-tags"><span class="player-tag">Institutional trust</span><span class="player-tag">First-mover</span></div></div>
+        <div class="player-card"><div class="player-name">Banco Inter</div><div class="player-pos">Accelerated growth</div><div class="player-desc">Strong penetration among youth and Northeast. Mass Market at 67% of base. Grows via simple UX and competitive pricing. Well positioned to capture dissatisfied recurring Nubank users.</div><div class="player-tags"><span class="player-tag">Price</span><span class="player-tag">Youth</span><span class="player-tag">Northeast</span></div></div>
+        <div class="player-card"><div class="player-name">Meu Tudo</div><div class="player-pos">Tactical specialist</div><div class="player-desc">High penetration in Northeast and Midwest. More mature base (30–49), Mass Market at 65%. Grows via word-of-mouth and attractive rates. Reference among high-volume recurring users.</div><div class="player-tags"><span class="player-tag">Word-of-mouth</span><span class="player-tag">Rates</span><span class="player-tag">Midwest</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PRIVATE PAYROLL ============ -->
+  <div id="panel-private" style="display:none">
+    <div class="product-header">
+      <div class="ph-icon">💼</div>
+      <div>
+        <div class="ph-eyebrow">Product · Secured Lending</div>
+        <div class="ph-title">Private Payroll — Consignado Privado</div>
+        <div class="ph-sub">Drop & Success Cases · Simulation Revamp · Market Deep Dive — Q2 2025 to Q4 2025</div>
+        <div class="ph-badge"><span class="ph-badge-dot"></span>Most recent study: Q4 2025 · Qualitative + Deep Dive</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('private','overview',this)">Overview</button>
+      <button class="tab" onclick="switchTab('private','hiring',this)">Hiring</button>
+      <button class="tab" onclick="switchTab('private','posthiring',this)">Post-Hiring</button>
+      <button class="tab" onclick="switchTab('private','players',this)">Players</button>
+    </div>
+
+    <div id="private-overview" class="tab-content active">
+      <div class="block"><h3>What is the product</h3><p>Private payroll loan with direct paycheck deduction for CLT private sector workers. Objectively safer and cheaper than personal loans — but suffers from structural invisibility. The majority of eligibles don't know the product exists at Nubank or anywhere in the market.</p></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="block"><h3>The awareness problem</h3><ul><li>88% of eligibles have never had a Private Payroll offer at Nubank</li><li>Discovery is accidental: app notification, TikTok, word of mouth</li><li>54% are CLT but only 19% are active product users</li><li>Personal loan is the mental benchmark — everything is compared to it</li></ul></div>
+        <div class="block"><h3>Who converts and why</h3><ul><li>88% of users are CLT driven by financial urgency — covering bills, avoiding late payments</li><li>Main reason to choose PP: lower interest rate (39%), followed by easier installments (28%)</li><li>46% of users simulated other loans at Nubank before hiring PP</li><li>70% are on their first ever private payroll loan — still a new category</li></ul></div>
+      </div>
+      <div class="grid-3" style="margin-bottom:16px">
+        <div class="stat-card"><div class="stat-num">88%</div><div class="stat-label">Eligibles unaware of PP offer at Nubank</div></div>
+        <div class="stat-card"><div class="stat-num">74</div><div class="stat-label">pNPS — highly rated by those who use it</div></div>
+        <div class="stat-card"><div class="stat-num">90%</div><div class="stat-label">CSAT — hiring satisfaction (Top2Box)</div></div>
+      </div>
+    </div>
+
+    <div id="private-hiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Awareness</h2></div>
+        <div class="insight-card"><p><strong>Discovery is accidental, not intentional.</strong> Most users find the product through a push notification, TikTok video, or a friend's recommendation — not by actively searching. Before hiring, knowledge is fragmented and superficial: users know the discount is applied to payroll, that the payment is fixed, and that it's "cheaper than a credit card" — but that's it.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>CTPS Digital is a growing acquisition channel</strong> — especially for smaller fintechs (Gooroo, Agibank, Meu Tudo). The app provides institutional validation and directs users via a link, converting clients who would never reach Nubank organically. For larger banks, CTPS informs about credit availability and enables comparison.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>Eligibles have a lower-risk financial profile</strong> — organized, no immediate credit need, and a negative view of loans in general. Users are mostly CLT in urgent situations. This gap explains why awareness doesn't automatically convert into hiring.</p><span class="source-tag">Nuzaré Wave 3 · N=571 users / 426 eligibles</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Product unknown vs. personal loan</strong> — PL is the mental benchmark for everyone. Private payroll feels "more complicated" even though it's objectively better. The battle is about familiarity and mental models, not price. Users are not rejecting the product — they're not even aware of it.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Consideration</h2></div>
+        <div class="insight-card"><p><strong>Consideration is driven by stability and trust in "official" or "serious" institutions.</strong> Users evaluate the trade-off between the solidity of traditional banks and the transparency or agility of digital banks. The installment amount — "does it fit in my salary?" — is the primary filter, not the interest rate or total cost.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>Traditional banks win on security but lose on experience. Digital banks win on UX but lose when the offer isn't visible. Fintechs win on immediate availability but lose on trust.</strong> The payroll loan is seen as advantageous in any institution — but reasons and risks vary by category.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>Mass Market users compare reactively and based on familiarity</strong> — driven by urgency, emotional factors, or convenience. Super Core / High Income users compare analytically: rates, flexibility, prepayment conditions, and total effective cost across multiple institutions and banks.</p><span class="source-tag">Drop & Success Cases Q2/2025 · N=12</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Consignable margin not understood</strong> — no profile (Mass Market to High Income) understands what margin is, how it's calculated, or why it limits installments. Generates abandonment and trial-and-error in the calculator. Users frequently leave the app to search for external explanations.</div></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Rate shown as "starting from" creates skepticism</strong> — Super Core / High Income users immediately question the "a partir de 1.89%" message. They understand it's not the final rate and choose to simulate or compare first before proceeding, while Mass Market users don't question it at all.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Conversion</h2></div>
+        <div class="insight-card"><p><strong>Drop is exploratory, not rejection.</strong> Many users drop out because they were curious, comparing with other banks, or simulating without urgent need. This is especially common among non-PBR users. Drop doesn't mean disinterest — it's often part of the decision-making process. The user leaves to compare and may not return.</p><span class="source-tag">Drop & Success Cases Q2/2025 · N=12</span></div>
+        <div class="insight-card"><p><strong>Conversion is driven by installment affordability + trust + frictionless experience.</strong> Fintechs convert even with inconsistent journeys when they approve negative-credit borrowers with affordable installments. For Mass Market, installment amount has emotional weight: "I want to see if I can get it" is the primary motivation at the calculator step.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>The early repayment benefit is a powerful but invisible differentiator.</strong> Users who hired PP at Nubank value the ability to prepay without needing a manager or phone call — but this benefit only appears on the final contract screen. It's frequently missed by Mass Market users and only proactively sought by Super Core/High Income.</p><span class="source-tag">Drop & Success Cases Q2/2025 · Usability Test</span></div>
+      </div>
+    </div>
+
+    <div id="private-posthiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Management</h2></div>
+        <div class="insight-card"><p><strong>Post-hiring is the most fragmented and negative phase of the journey.</strong> Users rely on app clarity to monitor: the loan status must be transparent, installment history accessible, and the contract end date visible. When this information is unclear, it contradicts the main reasons for taking out the loan — generating insecurity and confusion.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>The biggest post-hiring detraction driver is paycheck-app sync errors.</strong> When the installment deducted from the paycheck doesn't match what the app shows, users develop disproportionate anxiety about CPF blacklisting. This threatens all trust built during the hiring process.</p><span class="source-tag">Nuzaré Wave 3 · Detraction verbatims</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Weak post-hiring journey across the entire market</strong> — no competitor delivers consistent clarity, proactive follow-up, or accessible support after hiring. This is a clear differentiation opportunity: lack of contract history, confusion with multiple contracts, and no alerts for contract end date are universal pain points.</div></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Users track installments outside the bank app</strong> — via work card (CTPS) and payslip. When information diverges between the app and the payslip, users feel a "black box" effect and lose confidence in the digital channel.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Portability, Refinancing &amp; Renegotiation</h2></div>
+        <div class="insight-card"><p><strong>Portability doesn't register on the consumer's mental radar.</strong> Almost no one uses it because they don't know it exists, don't understand what it means, and confuse it with taking out a new loan. The option isn't clearly presented in apps — the main tool for raising awareness about financial products.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="insight-card"><p><strong>Refinancing and renegotiation are treated as synonyms.</strong> The goal in both cases is always the same: reduce the installment, extend the deadline, or get some immediate cash. "I need to breathe now, then I'll figure out the rest." It's a frustrating moment — users don't want to reach this stage. The trigger usually comes from trying to get another loan and discovering they can't.</p><span class="source-tag">Market Deep Dive Q4/2025</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Portability, refinancing, and renegotiation are presented without conceptual translation</strong> — terms appear as actions/choices without explanation of what they mean or their practical consequences. Users don't know the difference and feel insecure. When they don't find them quickly in the app, they conclude the feature doesn't exist and escalate to a manager.</div></div>
+      </div>
+    </div>
+
+    <div id="private-players" class="tab-content">
+      <div class="grid-4">
+        <div class="player-card"><div class="player-name">Nubank</div><div class="player-pos">Challenger in growth</div><div class="player-desc">Superior UX and simulation transparency are key strengths. Loses to banks with lower rates and fintechs that approve negative-credit users. Prepayment via app is a unique differentiator — but it's buried in the contract screen and goes unnoticed.</div><div class="player-tags"><span class="player-tag">UX</span><span class="player-tag">Digital prepayment</span><span class="player-tag">Transparency</span></div></div>
+        <div class="player-card"><div class="player-name">Banco do Brasil</div><div class="player-pos">Relationship reference</div><div class="player-desc">Salary bank for many — captures margin with pre-approved offers before the client considers alternatives. More attractive rates. The Itaú journey is described as "fluid and frictionless" — market benchmark for hiring experience.</div><div class="player-tags"><span class="player-tag">Salary anchor</span><span class="player-tag">Rates</span><span class="player-tag">Credibility</span></div></div>
+        <div class="player-card"><div class="player-name">Itaú</div><div class="player-pos">Reference experience</div><div class="player-desc">Hiring journey described as "fluid and frictionless" — market benchmark for experience. Communicates the product well with clear simulation and hiring screens. All good workflows happen in the hiring stage.</div><div class="player-tags"><span class="player-tag">Reference journey</span><span class="player-tag">Clarity</span></div></div>
+        <div class="player-card"><div class="player-name">Gooroo / Meu Tudo / Agibank</div><div class="player-pos">Fintechs via CTPS</div><div class="player-desc">Approve negative-credit users — decisive for those with no alternative. Reach users via CTPS Digital for institutional validation. All bad post-hiring workflows are concentrated here. Lose on transparency but win on approval and availability.</div><div class="player-tags"><span class="player-tag">Negative-credit approval</span><span class="player-tag">CTPS Digital</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ INSS ============ -->
+  <div id="panel-inss" style="display:none">
+    <div class="product-header">
+      <div class="ph-icon">🧓</div>
+      <div>
+        <div class="ph-eyebrow">Product · Secured Lending</div>
+        <div class="ph-title">INSS</div>
+        <div class="ph-sub">INSS X-Ray · Top-up Research · Assistance Benchmarking · Nuzaré Wave 3 — Q3 2025 to Q1 2026</div>
+        <div class="ph-badge"><span class="ph-badge-dot"></span>Most recent study: Nuzaré W3 · N=957 (566 users + 391 eligibles)</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('inss','overview',this)">Overview</button>
+      <button class="tab" onclick="switchTab('inss','hiring',this)">Hiring</button>
+      <button class="tab" onclick="switchTab('inss','posthiring',this)">Post-Hiring</button>
+      <button class="tab" onclick="switchTab('inss','players',this)">Players</button>
+    </div>
+
+    <div id="inss-overview" class="tab-content active">
+      <div class="block"><h3>What is the product</h3><p>Payroll loan for INSS retirees and pensioners, with automatic deduction from the benefit. The most accessible credit product for an audience with limited access to the traditional financial system — but also the hardest to reach digitally.</p></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="block"><h3>Audience profile</h3><ul><li>Retirees (78%) and pensioners (25%) · 60–70 years (51%) · up to 3 min. wages (86%)</li><li>~30% of 60+ don't own a smartphone; 69% own one but only 11% feel very confident</li><li>Pensioners are more digital: 84% own smartphone vs. 69% of retirees</li><li>Primary bank: traditional banks (79–87%) · Physical branch is main hiring channel (78%)</li></ul></div>
+        <div class="block"><h3>Awareness and behavior</h3><ul><li>8 in 10 eligibles never had an INSS offer at Nu</li><li>44% of non-users hired elsewhere P6M — wanted PL, not available at Nu</li><li>Urgency growing: 60% emergency (W3) vs 52% (W2)</li><li>83% of users compared offers before closing with Nu; 77% had at least one other offer</li></ul></div>
+      </div>
+      <div class="block" style="margin-bottom:16px">
+        <h3>KPIs — Nuzaré Wave 3 (Users · N=566)</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+          <div class="stat-card"><div class="stat-num">81</div><div class="stat-label">pNPS — +5p vs Nuzaré W2</div></div>
+          <div class="stat-card"><div class="stat-num">91%</div><div class="stat-label">CSAT (Top2Box) — +3pp vs W2</div></div>
+          <div class="stat-card"><div class="stat-num">96%</div><div class="stat-label">Purchase Intent (Top2Box) — stable vs W2</div></div>
+        </div>
+        <ul style="margin-top:12px">
+          <li>Interest Rates Perception and Feeling Supported are the main pNPS drivers</li>
+          <li>Hiring Process Understanding (89): ease and no bureaucracy lead satisfaction drivers</li>
+          <li>Interest Rates Perception (63): improvement vs W2 (59), still the most challenging dimension</li>
+          <li>Higher KPIs vs W2 also due to methodology fix: questionnaire started using "INSS payroll" instead of generic "loan"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="inss-hiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Awareness</h2></div>
+        <div class="insight-card"><p><strong>Digital literacy is a double barrier.</strong> Low-literacy users (47% of sample) have no smartphone and Nubank awareness of only 39% vs. 78% among high-literacy users. App access is the barrier before the product itself. Among 71+ years, 34% don't own a smartphone and 44% say they're "not at all confident" using one.</p><span class="source-tag">INSS X-Ray / Datafolha Q3/2025 · N=337</span></div>
+        <div class="insight-card"><p><strong>Children and relatives are the most effective conversion vector.</strong> 48% of under-59s know someone who uses Nubank. For 71+, only 7% do. Family recommendation is the most cited factor for hiring a payroll loan with Nubank — followed by the ability to speak to a manager (45%) and receiving a printed contract (35%).</p><span class="source-tag">INSS X-Ray / Datafolha Q3/2025 · N=337</span></div>
+        <div class="insight-card"><p><strong>Non-PBRs don't understand how Nubank loans work</strong> — 23% of Non-PBRs cite this as reason to hire elsewhere, vs. just 2% of PBRs. It's a communication barrier, not a product issue. PBR users have significantly higher scores across all dimensions compared to Non-PBRs.</p><span class="source-tag">Nuzaré Wave 3 · N=566 users</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Digital and access barriers are still a structural reality</strong> — those aged 71+ and with low digital literacy are the least reachable. An entirely digital model would not convince this group. Bradesco uses a hybrid strategy: digital app for literate users, and branches for everyone else.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Consideration</h2></div>
+        <div class="insight-card"><p><strong>Interest rate is the main reason to hire INSS payroll at Nubank</strong> (24% of users, +8pp vs W2), followed by ease of post-hiring process (14%). 63% of users who simulated other products chose INSS payroll for a lower rate; 42% for more installment options. Security (38%) and easier payments (34%) complete the top motivators.</p><span class="source-tag">Nuzaré Wave 3 · N=566 users</span></div>
+        <div class="insight-card"><p><strong>Pensioners are the most digitally ready profile</strong>: 84% own a smartphone vs. 69% of retirees, and 75% know Nubank vs. 56%. They represent the closest target to a full digital hiring journey and have higher product penetration (46% have a payroll loan vs. the broader base).</p><span class="source-tag">INSS X-Ray / Datafolha Q3/2025 · N=337</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Rates and interest not understood</strong> — users can't translate percentage into real impact on their benefit. The simulation shows numbers, not practical consequences. When the rate is not understood, users escalate to human validation (call center, manager, trusted family member) or interrupt the simulation entirely.</div></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Structural distrust of Nubank among 71+</strong> — Nubank doesn't carry the "weight" of a traditional bank. 20–26% give Nubank a score of 0 on safety, solidity, and transparency. The physical branch, printed contract, and in-person manager are missing — and these are the elements that convey security for this age group.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Conversion</h2></div>
+        <div class="insight-card"><p><strong>The simulation experience combines bank app + Meu INSS app + trusted person.</strong> The Meu INSS app is the primary source of truth for margin, active contracts, and deductions — the bank becomes an intermediary. Users explicitly say they check the INSS app first, then go to the bank. The goal isn't centralizing in Nubank's app; it's being predictable about where each piece of information lives.</p><span class="source-tag">Assistance Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>In-app support is perceived as an insufficient bot</strong> for this audience. Chat is seen as automated and unable to resolve sensitive credit doubts. Users need a human voice for loan contracts. The path from self-service to human is unclear — when users can't find it, they abandon the flow or go outside the app.</p><span class="source-tag">Assistance Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>The payroll loan is presented with many numbers but little practical translation.</strong> Users need: real cost of the decision (CET in currency, not just percentage), impact on monthly benefit, operational predictability (when the money comes in, extra fees), and the ability to simulate in their own way. When help exists but doesn't solve the doubt at the critical moment, the simulation is interrupted.</p><span class="source-tag">Assistance Benchmarking Q1/2026</span></div>
+      </div>
+    </div>
+
+    <div id="inss-posthiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Management</h2></div>
+        <div class="insight-card"><p><strong>Loan management is much less familiar than hiring.</strong> Because the installment is automatically deducted, most users don't actively monitor the loan — they only check when they need a new one. When they return to the app, they find no clear management, no installment history, and no end-of-contract alerts. The experience shifts to payslip + Meu INSS for any real monitoring.</p><span class="source-tag">Assistance Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>Loan management in digital is varied and inconsistent.</strong> When it works, it delivers fluidity and speed — highly appreciated. But it exposes important weaknesses for an older, risk-averse audience: difficulty understanding costs, little control over decisions, and journeys that are interrupted or migrate between channels without clear explanation.</p><span class="source-tag">Assistance Benchmarking Q1/2026</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Post-hiring is invisible</strong> — automatic deduction means most users don't monitor the contract. The biggest friction is cognitive: the app shows numbers but doesn't translate impacts (rates, installments, margin, schedule, total cost). Help tools are either not visible within the management screen or perceived as bots that can't resolve sensitive questions.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Portability, Refinancing &amp; Renegotiation</h2></div>
+        <div class="insight-card"><p><strong>9 in 10 clients prefer portability with Top-up.</strong> Ideal offer: lower installment + longer term + Top-up, even if it raises the total cost. 34% would only do portability if Top-up is available. Top-up awareness grows with experience: 77% of those with 5+ contracts know it vs. far fewer among first-timers.</p><span class="source-tag">Top-up Research Q3/2025 · N=809</span></div>
+        <div class="insight-card"><p><strong>Top-up is intuitively understood as "the money that goes into your account when you make changes to your loan"</strong> (84–89% associate this correctly), but not everyone understands the mechanism behind it. The value proposition — smaller installment + extra cash — resonates strongly across all profiles.</p><span class="source-tag">Top-up Research Q3/2025 · N=809</span></div>
+        <div class="insight-card"><p><strong>Portability, refinancing, and renegotiation are presented as actions without conceptual explanation</strong> — terms appear without translation of concepts and practical consequences. Advanced operations (portability, refinancing) rarely happen via app; they usually occur outside the digital realm — through physical branches, manager delegation, or correspondent. The main factor is not complexity but confidence to sustain the operation end-to-end without explanation gaps.</p><span class="source-tag">Assistance Benchmarking Q1/2026</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Top-up awareness is not evenly distributed</strong> — eligibles (55% unaware) and first-time users (42% unaware) miss out on the most powerful portability incentive. Communication about Top-up needs to happen earlier in the journey, before the portability decision point.</div></div>
+      </div>
+    </div>
+
+    <div id="inss-players" class="tab-content">
+      <div class="grid-4">
+        <div class="player-card"><div class="player-name">Bradesco</div><div class="player-pos">PBR leader among retirees</div><div class="player-desc">Main relationship bank for the INSS base. Aggressive hybrid strategy: digital app for literate users and branches for everyone else. Communicates all agreements simultaneously. Online communications target younger, more digitally literate audiences.</div><div class="player-tags"><span class="player-tag">Dominant PBR</span><span class="player-tag">Hybrid strategy</span><span class="player-tag">Branch</span></div></div>
+        <div class="player-card"><div class="player-name">Meu Tudo</div><div class="player-pos">Fintech with growing penetration</div><div class="player-desc">Present among pensioners, refinancers, and clients with 5+ contracts. Grows via availability and CTPS integration. High presence in Midwest and Northeast. Strong among high-volume borrowers seeking better credit options.</div><div class="player-tags"><span class="player-tag">Availability</span><span class="player-tag">CTPS Digital</span><span class="player-tag">Pensioners</span></div></div>
+        <div class="player-card"><div class="player-name">Banco Inter</div><div class="player-pos">Digital among pensioners</div><div class="player-desc">Relevant especially among pensioners with higher digital literacy. Positioning aligned with the younger, more connected profile of this segment. Less relevant for the core retiree base.</div><div class="player-tags"><span class="player-tag">Digital</span><span class="player-tag">Young pensioners</span></div></div>
+        <div class="player-card"><div class="player-name">Nubank</div><div class="player-pos">Challenger with trust to build</div><div class="player-desc">56% awareness among retirees but only 26% consideration. The gap is trust, not knowledge. An entirely digital model won't convince the 71+ group. Opportunity: humanized support (WhatsApp with manager), education in plain language, and contextual help visibility.</div><div class="player-tags"><span class="player-tag">UX</span><span class="player-tag">WhatsApp (in progress)</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PUBLIC PAYROLL ============ -->
+  <div id="panel-public" style="display:none">
+    <div class="product-header">
+      <div class="ph-icon">🏛</div>
+      <div>
+        <div class="ph-eyebrow">Product · Secured Lending</div>
+        <div class="ph-title">Public Payroll — Consignado Público</div>
+        <div class="ph-sub">Public X-Ray · SIAPE Deep Dive · Community Benchmarking — Q4 2024 to Q1 2026</div>
+        <div class="ph-badge"><span class="ph-badge-dot"></span>Most recent study: Q1 2026 · N=955 + Qualitative</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('public','overview',this)">Overview</button>
+      <button class="tab" onclick="switchTab('public','hiring',this)">Hiring</button>
+      <button class="tab" onclick="switchTab('public','posthiring',this)">Post-Hiring</button>
+      <button class="tab" onclick="switchTab('public','players',this)">Players</button>
+    </div>
+
+    <div id="public-overview" class="tab-content active">
+      <div class="block"><h3>What is the product</h3><p>Payroll loan for municipal, state, federal, and military public servants. Stable, predictable income audience — but strongly anchored to traditional banks, with preference for physical and human channels, and a clear separation between "everyday money" and "serious money."</p></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="block"><h3>Profiles by sphere</h3><ul><li>Municipal (61%): lower income (66% earn up to 3 min. wages), highest appetite for payroll loans</li><li>State (26%): higher wage average; personal loan could be an alternative</li><li>Federal civil (25%): highest wage, easier access to credit, less inclined to take loans</li><li>Military (18%): youngest profile, most open to Nubank — but lowest appetite for loan products</li></ul></div>
+        <div class="block"><h3>Key dynamics</h3><ul><li>Salary bank (where salary is received) is the #1 reason for choosing a bank to hire a payroll loan</li><li>Lower interest rate is #2 — and a decisive dealbreaker even for small differences (e.g., 0.06%)</li><li>61% of servants up to 34 years would consider hiring a payroll loan with Nubank</li><li>82% of servants up to 44 have children/relatives who use Nubank</li></ul></div>
+      </div>
+      <div class="block" style="margin-bottom:16px">
+        <h3>KPIs — Nuzaré Wave 3 (Users · N=421)</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+          <div class="stat-card"><div class="stat-num">70</div><div class="stat-label">pNPS — -6p vs W2 (reference)</div></div>
+          <div class="stat-card"><div class="stat-num">89%</div><div class="stat-label">CSAT (Top2Box) — +1pp vs W2</div></div>
+          <div class="stat-card"><div class="stat-num">93%</div><div class="stat-label">Purchase Intent (Top2Box) — -3pp vs W2</div></div>
+        </div>
+        <ul style="margin-top:12px">
+          <li>Feeling Supported and Amount Available &amp; Payment Terms Adequacy are the main pNPS drivers</li>
+          <li>Hiring Process Understanding (92): highest dimension — ease and speed are the main satisfaction drivers</li>
+          <li>Interest Rates Perception (47): most challenging dimension — decline vs W2 reinforces need for funnel analysis</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="public-hiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Awareness</h2></div>
+        <div class="insight-card"><p><strong>Children and relatives are the main conversion vector</strong>: 82% of servants up to 44 have children/relatives who use Nubank. Awareness is strong among young adults (49% know Nubank and 48% have an account), but drops sharply with age — 60+ have only 45% awareness and 5% with an account.</p><span class="source-tag">Public X-Ray Q4/2025 · N=955</span></div>
+        <div class="insight-card"><p><strong>Payroll loan offers are often perceived as excessive and harassing.</strong> At least half of participants report being bothered by the volume of offers via WhatsApp/SMS/calls/email. Smaller financial companies are the biggest offenders. When approaches include margin/limit information, some interpret it as data leakage. The dominant mental model: "loans are a user-driven topic; external approaches are tolerated only if occasional, clear, and contextual."</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>Correspondents and loan agents are key intermediaries</strong> — especially in the military universe. The E-Consig ecosystem automatically triggers offers to bank representatives who proactively contact via WhatsApp and conduct the entire process. Among civil servants, the bank manager plays a similar role: a trusted point of contact for comparing rates and navigating the process.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Consideration</h2></div>
+        <div class="insight-card"><p><strong>There are four distinct SIAPE profiles:</strong> (1) PBR who hires at Nu — escaping harassment, values agility and UX; (2) Non-PBR who hires at Nu — driven by autonomy and a timely offer; (3) Non-PBR who hires at competitor — strict rate comparison, math over experience; (4) PBR who uses Nu daily but hires elsewhere — daily UX vs. safety for large, high-value commitments.</p><span class="source-tag">SIAPE Deep Dive Q1/2026</span></div>
+        <div class="insight-card"><p><strong>"Mental accounting" is the invisible barrier.</strong> Users separate "everyday money" (Nubank — agility, control, organization) from "serious money" (traditional bank — stability, long-term commitment). Nubank is the "anti-chaos" tool for daily life, but not yet perceived as a structural partner for high-value, long-term debt.</p><span class="source-tag">SIAPE Deep Dive Q1/2026</span></div>
+        <div class="insight-card"><p><strong>Trust in the institution accounts for up to 24% of the hiring decision</strong> — a strategic asset that can retain PBR clients tempted to hire elsewhere. Salary bank primacy (#1 driver) and lower interest rates (#2) are the top factors. Being perceived as an "official" or "serious" institution matters significantly for consideration.</p><span class="source-tag">Public X-Ray Q4/2025 · Datafolha</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Rate as a penny dealbreaker</strong> — a PBR who uses Nubank for everything hires at BB for a 0.06% difference. "Nubank was at 1.95% and BB at 1.89% — that was enough for me to walk away." UX doesn't compensate for the perceived mathematical disadvantage. Rational profiles treat this as a pure calculation, not a relationship decision.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Conversion</h2></div>
+        <div class="insight-card"><p><strong>Human channel is not a substitute for digital — it's a strategic complement.</strong> Managers, correspondents, and WhatsApp are activated when they save time, translate risk, or unlock app gaps. The choice of channel is pragmatic: speed, clarity, and trust drive when users go digital vs. human. This applies to both civilians and military, for different reasons.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>The security paradox at conversion:</strong> Nubank's smooth UX becomes a liability for high-value contracts. "Too easy" triggers fear of fraud or error. Additional steps — biometrics, confirmations, extra validations — are well received when they reinforce protection in sensitive actions. The absence of "human friction" creates anxiety about large commitments.</p><span class="source-tag">SIAPE Deep Dive Q1/2026 · Community Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>The Banco do Brasil journey is described as the most trustworthy</strong> — not despite its extra steps, but because of them. BB redirects to WhatsApp at key points, which unexpectedly increases perceived security. Caixa's app directs users to branch WhatsApp, which also increases trust through human handoff. Contract clarity (visible PDF) builds confidence.</p><span class="source-tag">SIAPE Deep Dive Q1/2026 · App benchmarking</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>84% of servants say downloading the contract is an essential factor</strong> for hiring with Nubank. 79% want the ability to call a bank manager. For public servants, contract formalization and access to human support are not nice-to-haves — they are conversion requirements for structural financial commitments.</div></div>
+      </div>
+    </div>
+
+    <div id="public-posthiring" class="tab-content">
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Management</h2></div>
+        <div class="insight-card"><p><strong>The payroll loan is not experienced as a unique digital journey.</strong> The real experience combines: bank app (simulation and hiring), SouGov/E-Consig (margin consultation and authorization), pay stub (installment confirmation), and human channels (sensitive decisions). Users don't expect centralization — they expect predictability about where each piece of information lives and why that source is trustworthy.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>Payroll loan management is more about seeking better rates than monitoring installments.</strong> Since payment is automatic and confirmed on the pay stub, monthly monitoring of the bank app loses relevance. Attention becomes active when the opportunity to reduce costs arises — not for routine tracking. The paycheck and SouGov take center stage; the bank app becomes secondary.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Fragmented post-hiring management</strong> — monitoring happens via pay stub, SouGov, and bank app in parallel. No single source of truth. When information diverges between sources, insecurity grows. Control limitations (not being able to adjust installments or complete portability in the app) reinforce the "black box" perception.</div></div>
+      </div>
+      <div class="tab-section">
+        <div class="tab-section-label"><h2>Portability, Refinancing &amp; Renegotiation</h2></div>
+        <div class="insight-card"><p><strong>Portability, refinancing, and renegotiation have conceptual interest but rarely reach clear and actionable flows.</strong> Users understand their purpose but when they don't find them quickly in the app, they conclude the feature doesn't exist and escalate to a manager. The perception reinforces channel switching and weakens trust in the digital journey — over time, the app becomes informational and execution is delegated to humans.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>There is significant confusion between renegotiation and refinancing</strong> — used interchangeably by users. The lack of clear distinction in the app (or the use of alternative words like "renew" or "solve debts") contributes to this. When seeking either, the goal is always the same: reduce the installment, extend the deadline, or consolidate into one payment.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="insight-card"><p><strong>Portability path is varied and has multiple friction points.</strong> When found in the app, it may fail due to preconditions (prior authorizations needed at other institutions) or may not list payroll-deductible in the portability simulation. In SouGov/E-Consig, users see it as authorization/margin consultation, not as where portability is executed. When unclear, users call their manager or correspondent.</p><span class="source-tag">Community Benchmarking Q1/2026</span></div>
+        <div class="pain-item"><div class="pain-dot"></div><div class="pain-text"><strong>Portability, refinancing, and renegotiation are presented as actions without conceptual translation</strong> — terms appear without explaining what they mean or their practical consequences. This creates uncertainty in a risk-averse audience. Nubank and BB are exceptions — identified as banks that provide some explanation of portability.</div></div>
+      </div>
+    </div>
+
+    <div id="public-players" class="tab-content">
+      <div class="grid-4">
+        <div class="player-card"><div class="player-name">Banco do Brasil</div><div class="player-pos">Dominant salary anchor</div><div class="player-desc">Salary bank for a large portion of servants. Captures margin with pre-approved offers before the client considers alternatives. "Cluttered" UX but compensated by credibility, rate, and the trusted perception created by its WhatsApp handoff at key flow points.</div><div class="player-tags"><span class="player-tag">First-mover</span><span class="player-tag">Rate</span><span class="player-tag">Historical credibility</span></div></div>
+        <div class="player-card"><div class="player-name">Caixa Econômica</div><div class="player-pos">Physical safety for high-value</div><div class="player-desc">Preferred for higher-value contracts due to in-person attendance with signature. App flow directs to branch WhatsApp — which unexpectedly increases perceived security and becomes a trust signal rather than a friction point.</div><div class="player-tags"><span class="player-tag">Physical presence</span><span class="player-tag">Perceived safety</span></div></div>
+        <div class="player-card"><div class="player-name">Nubank</div><div class="player-pos">Strong daily, challenger in credit</div><div class="player-desc">Primary account for 48% of young servants (up to 34). Promoters generate high consideration among existing users. Main obstacle: "too easy" UX perceived as unsafe for large contracts; no differentiated rate; no physical presence for high-value formalization.</div><div class="player-tags"><span class="player-tag">Daily UX</span><span class="player-tag">App-first</span><span class="player-tag">Young PBR</span></div></div>
+        <div class="player-card"><div class="player-name">Poupex / E-Consig</div><div class="player-pos">Military institutional ecosystem</div><div class="player-desc">In the military universe, E-Consig is the authorization point — banks are intermediaries. Correspondents curate offers and negotiate rates via WhatsApp. The logic is delegated, not self-managed. Civilians use bank managers in a similar role as a relational shortcut.</div><div class="player-tags"><span class="player-tag">Military ecosystem</span><span class="player-tag">Loan agent</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var cur=null;
+function showHome(){
+  document.getElementById('home').style.display='block';
+  document.getElementById('detail').style.display='none';
+  if(cur){document.getElementById('panel-'+cur).style.display='none';cur=null;}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showProduct(id){
+  document.getElementById('home').style.display='none';
+  if(cur)document.getElementById('panel-'+cur).style.display='none';
+  cur=id;
+  document.getElementById('detail').style.display='block';
+  document.getElementById('panel-'+id).style.display='block';
+  var p=document.getElementById('panel-'+id);
+  p.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',i===0);});
+  p.querySelectorAll('.tab-content').forEach(function(c,i){c.classList.toggle('active',i===0);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchTab(prod,name,btn){
+  var p=document.getElementById('panel-'+prod);
+  p.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  p.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+  document.getElementById(prod+'-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
